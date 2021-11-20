@@ -23,22 +23,21 @@ logger.level = 'debug';
 const cutieTokenAddress = 'ECRXxKJDff23uDmkcg3WCjX38z1W7HnCKzVvKuwfHcoh'
 
 // Initialize Discord Bot
-const client = new Discord.Client()
+const client = new Discord.Client({ intents: [ "GUILDS", "GUILD_MESSAGES" ]})
 client.login(auth.token)
 
 client.on('ready', function (evt) {
     logger.info('Connected');
-    logger.info('Logged in as: ');
-    logger.info(client.username + ' - (' + client.id + ')');
 });
 
 client.on('message', function (message) {
-	switch(message.content) {
-		case '!cutie N':
-		case '!cutie Balance':
-		case '!cutie Samo Balance':
+	var content = message.content.toLowerCase();
+	switch(content) {
+		case '!cutie n':
+		case '!cutie samo':
+		case '!cutie samo count':
 			getCutieTokenBalance().then(res =>
-				client.channel.send(res.data[0].result.value.uiAmountString.replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' SAMO')
+				message.channel.send(res.data[0].result.value.uiAmountString.replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' SAMO')
 			)
 		break;
 	}
