@@ -3,7 +3,7 @@
 // requires auth.json of the structure
 /*
 {
-  "token": "token "
+  "token": "token"
 }
 */
 
@@ -29,29 +29,19 @@ client.login(auth.token)
 client.on('ready', function (evt) {
     logger.info('Connected');
     logger.info('Logged in as: ');
-    logger.info(bot.username + ' - (' + bot.id + ')');
+    logger.info(client.username + ' - (' + client.id + ')');
 });
 
 client.on('message', function (message) {
-    // Our bot needs to know if it will execute a command
-    // It will listen for messages that will start with `!`
-    if (message.substring(0, 1) == '!') {
-        var args = message.substring(1).split(' ');
-        var cmd = args[0];
-       
-        args = args.splice(1);
-        switch(message.content) {
-            // !ping
-            case '!cutie N':
-			case '!cutie Balance':
-			case '!cutie Samo Balance':
-			    getCutieTokenBalance().then(res =>
-				    client.channel.send(res.data[0].result.value.uiAmountString.replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' SAMO')
-				)
-            break;
-            // Just add any case commands if you want to..
-         }
-     }
+	switch(message.content) {
+		case '!cutie N':
+		case '!cutie Balance':
+		case '!cutie Samo Balance':
+			getCutieTokenBalance().then(res =>
+				client.channel.send(res.data[0].result.value.uiAmountString.replace(/\B(?=(\d{3})+(?!\d))/g, ",") + ' SAMO')
+			)
+		break;
+	}
 });
 
 async function getCutieTokenBalance() {
